@@ -1,0 +1,6 @@
+<Context>
+    <Resource name="jdbc/thogakade" auth="Container" type="javax.sql.DataSource"
+              maxTotal="100" maxIdle="30" maxWaitMillis="10000"
+              username="root" password="Ijse@2024" driverClassName="com.mysql.cj.jdbc.Driver"
+              url="jdbc:mysql://localhost:3306/thogakade"/>
+</Context>
