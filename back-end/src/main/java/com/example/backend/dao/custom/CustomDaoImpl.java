@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CustomDaoImpl implements CustomerDao {
@@ -27,4 +28,24 @@ public class CustomDaoImpl implements CustomerDao {
         return pstm.executeUpdate() > 0;
 
     }
+
+    @Override
+    public Customer searchCustomer(int id) throws SQLException {
+        connection = ConnectionManager.getInstance().getConnection();
+
+        PreparedStatement pstm = connection.prepareStatement("SELECT * FROM customer WHERE cust_id=?");
+        pstm.setInt(1, id);
+
+        ResultSet resultSet = pstm.executeQuery();
+        if (resultSet.next()) {
+            return new Customer(
+                    resultSet.getInt(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getDouble(4)
+            );
+        }
+        return null;
+    }
+
 }

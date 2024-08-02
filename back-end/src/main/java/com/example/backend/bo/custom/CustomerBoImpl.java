@@ -28,4 +28,15 @@ public class CustomerBoImpl implements CustomerBo {
         );
 
     }
+
+    @Override
+    public CustomerDto searchCustomer(int id) throws IOException, SQLException {
+        Customer customer = customerDao.searchCustomer(id);
+        if (customer != null) {
+            System.out.println(customer+"=============================== bo");
+            return new CustomerDto(customer.getId(), customer.getName(), customer.getAddress(), customer.getSalary());
+        } else {
+            return null;
+        }
+    }
 }

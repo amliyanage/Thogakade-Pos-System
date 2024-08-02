@@ -9,4 +9,5 @@ import java.sql.SQLException;
 
 public interface CustomerBo {
     boolean addCustomer(CustomerDto customerDto) throws IOException, SQLException;
+    CustomerDto searchCustomer(int id) throws IOException, SQLException;
 }

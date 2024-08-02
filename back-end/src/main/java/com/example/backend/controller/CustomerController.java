@@ -54,6 +54,27 @@ public class CustomerController extends HttpServlet {
         }
     }
 
+    // TODO : Get Customer
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("=====================================================Get Customer");
+        try{
+            int id = Integer.parseInt(req.getParameter("id"));
+            System.out.println(id);
+            CustomerDto customerDto = customerBo.searchCustomer(id);
+            System.out.println(customerDto);
+            if (customerDto != null){
+                resp.setContentType("application/json");
+                Jsonb jsonb = JsonbBuilder.create();
+                jsonb.toJson(customerDto, resp.getWriter());
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
     @Override
     public void destroy() {
         super.destroy();
