@@ -50,4 +50,18 @@ public class ItemDaoImpl implements ItemDao {
         return null;
 
     }
+
+    @Override
+    public boolean updateItem(Item item) throws SQLException {
+
+        connection = ConnectionManager.getInstance().getConnection();
+
+        preparedStatement = connection.prepareStatement("UPDATE item SET item_name = ? , item_qty = ? , item_price = ? WHERE item_id=?");
+        preparedStatement.setString(1, item.getName());
+        preparedStatement.setInt(2, item.getQty());
+        preparedStatement.setDouble(3, item.getPrice());
+        preparedStatement.setInt(4, item.getId());
+
+        return preparedStatement.executeUpdate() > 0;
+    }
 }

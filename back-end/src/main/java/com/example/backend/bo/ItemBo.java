@@ -7,4 +7,6 @@ import java.sql.SQLException;
 public interface ItemBo {
     boolean addItem(ItemDto itemDto) throws SQLException;
     ItemDto searchItem(int id) throws SQLException;
+
+    boolean updateItem(ItemDto itemDto) throws SQLException;
 }

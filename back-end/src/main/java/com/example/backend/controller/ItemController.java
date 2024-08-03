@@ -41,7 +41,7 @@ public class ItemController extends HttpServlet {
                     writer.write("Failed to add Item");
                 }
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         }
     }
@@ -62,6 +62,31 @@ public class ItemController extends HttpServlet {
                 e.printStackTrace();
             }
         }
+    }
 
+    // TODO : Update Item
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (req.getContentType() == null || !req.getContentType().toLowerCase().startsWith("application/json")) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+        try ( var reader = req.getReader(); var writer = resp.getWriter()) {
+            Jsonb jsonb = JsonbBuilder.create();
+            ItemDto itemDto = jsonb.fromJson(reader, ItemDto.class);
+
+            if (itemBo.updateItem(itemDto)){
+                resp.setStatus(HttpServletResponse.SC_CREATED);
+                writer.write("Item Updated Successfully");
+            }
+            else {
+                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                writer.write("Failed to update Item");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

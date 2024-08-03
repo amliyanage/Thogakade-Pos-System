@@ -38,4 +38,16 @@ public class ItemBoImpl implements ItemBo {
         }
         return null;
     }
+
+    @Override
+    public boolean updateItem(ItemDto itemDto) throws SQLException {
+        return itemDao.updateItem(
+                new Item(
+                        itemDto.getId(),
+                        itemDto.getName(),
+                        itemDto.getQty(),
+                        itemDto.getPrice()
+                )
+        );
+    }
 }
