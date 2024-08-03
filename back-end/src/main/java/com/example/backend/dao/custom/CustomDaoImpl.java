@@ -14,12 +14,13 @@ import java.sql.SQLException;
 public class CustomDaoImpl implements CustomerDao {
 
     private Connection connection;
+    PreparedStatement pstm;
 
     @Override
     public boolean saveCustomer(Customer customer) throws SQLException {
         connection = ConnectionManager.getInstance().getConnection();
 
-        PreparedStatement pstm = connection.prepareStatement("INSERT INTO customer VALUES (?,?,?,?)");
+        pstm = connection.prepareStatement("INSERT INTO customer VALUES (?,?,?,?)");
         pstm.setInt(1, customer.getId());
         pstm.setString(2, customer.getName());
         pstm.setString(3, customer.getAddress());
@@ -33,7 +34,7 @@ public class CustomDaoImpl implements CustomerDao {
     public Customer searchCustomer(int id) throws SQLException {
         connection = ConnectionManager.getInstance().getConnection();
 
-        PreparedStatement pstm = connection.prepareStatement("SELECT * FROM customer WHERE cust_id=?");
+        pstm = connection.prepareStatement("SELECT * FROM customer WHERE cust_id=?");
         pstm.setInt(1, id);
 
         ResultSet resultSet = pstm.executeQuery();
@@ -46,6 +47,19 @@ public class CustomDaoImpl implements CustomerDao {
             );
         }
         return null;
+    }
+
+    @Override
+    public boolean updateCustomer(Customer customer) throws SQLException {
+        connection = ConnectionManager.getInstance().getConnection();
+
+        pstm = connection.prepareStatement("UPDATE customer SET cust_name = ? , cust_address = ? , cust_salary = ? WHERE cust_id=?");
+        pstm.setString(1, customer.getName());
+        pstm.setString(2, customer.getAddress());
+        pstm.setDouble(3, customer.getSalary());
+        pstm.setInt(4, customer.getId());
+
+        return pstm.executeUpdate() > 0;
     }
 
 }

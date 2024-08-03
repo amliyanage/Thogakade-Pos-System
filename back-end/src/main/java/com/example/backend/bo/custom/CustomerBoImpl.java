@@ -39,4 +39,16 @@ public class CustomerBoImpl implements CustomerBo {
             return null;
         }
     }
+
+    @Override
+    public boolean updateCustomer(CustomerDto customerDto) throws SQLException {
+        return customerDao.updateCustomer(
+                new Customer(
+                        customerDto.getId(),
+                        customerDto.getName(),
+                        customerDto.getAddress(),
+                        customerDto.getSalary()
+                )
+        );
+    }
 }

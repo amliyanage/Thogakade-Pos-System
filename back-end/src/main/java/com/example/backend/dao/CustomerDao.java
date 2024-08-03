@@ -7,4 +7,6 @@ import java.sql.SQLException;
 public interface CustomerDao {
     boolean saveCustomer(Customer customer) throws SQLException;
     Customer searchCustomer(int id) throws SQLException;
+
+    boolean updateCustomer(Customer customer) throws SQLException;
 }
