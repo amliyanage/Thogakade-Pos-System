@@ -89,4 +89,22 @@ public class ItemController extends HttpServlet {
             e.printStackTrace();
         }
     }
+
+    // TODO : Delete Item
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        var id = req.getParameter("id");
+        var writer = resp.getWriter();
+
+        try{
+            boolean isDeleted = itemBo.deleteItem(Integer.parseInt(id));
+            if (isDeleted){
+                resp.setStatus(HttpServletResponse.SC_CREATED);
+                writer.write("Item Deleted Successfully");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

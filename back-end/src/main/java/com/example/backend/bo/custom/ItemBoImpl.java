@@ -50,4 +50,9 @@ public class ItemBoImpl implements ItemBo {
                 )
         );
     }
+
+    @Override
+    public boolean deleteItem(int id) throws SQLException {
+        return itemDao.deleteItem(id);
+    }
 }

@@ -11,4 +11,6 @@ public interface ItemDao {
     ItemDto searchItem(int id) throws SQLException;
 
     boolean updateItem(Item item) throws SQLException;
+
+    boolean deleteItem(int id) throws SQLException;
 }
