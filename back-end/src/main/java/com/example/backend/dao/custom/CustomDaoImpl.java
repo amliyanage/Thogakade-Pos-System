@@ -62,4 +62,14 @@ public class CustomDaoImpl implements CustomerDao {
         return pstm.executeUpdate() > 0;
     }
 
+    @Override
+    public boolean deleteCustomer(int id) throws SQLException {
+        connection = ConnectionManager.getInstance().getConnection();
+
+        pstm = connection.prepareStatement("DELETE FROM customer WHERE cust_id=?");
+        pstm.setInt(1, id);
+
+        return pstm.executeUpdate() > 0;
+    }
+
 }

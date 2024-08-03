@@ -9,4 +9,6 @@ public interface CustomerDao {
     Customer searchCustomer(int id) throws SQLException;
 
     boolean updateCustomer(Customer customer) throws SQLException;
+
+    boolean deleteCustomer(int id) throws SQLException;
 }
