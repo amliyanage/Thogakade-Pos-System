@@ -7,6 +7,8 @@ import com.example.backend.dto.ItemDto;
 import com.example.backend.entity.Item;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ItemBoImpl implements ItemBo {
 
@@ -54,5 +56,25 @@ public class ItemBoImpl implements ItemBo {
     @Override
     public boolean deleteItem(int id) throws SQLException {
         return itemDao.deleteItem(id);
+    }
+
+    @Override
+    public List<ItemDto> getAllItems() throws SQLException {
+        List<Item> itemList = itemDao.getAllItems();
+
+        List<ItemDto> itemDtoList = new ArrayList<>();
+
+        for (Item item : itemList) {
+            itemDtoList.add(
+                    new ItemDto(
+                            item.getId(),
+                            item.getName(),
+                            item.getQty(),
+                            item.getPrice()
+                    )
+            );
+        }
+
+        return itemDtoList;
     }
 }

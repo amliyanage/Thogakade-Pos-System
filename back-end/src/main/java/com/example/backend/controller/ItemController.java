@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 @WebServlet( urlPatterns = "/item" )
 public class ItemController extends HttpServlet {
@@ -52,7 +53,14 @@ public class ItemController extends HttpServlet {
         var id = req.getParameter("id");
 
         if (id.equals("all")) {
-
+            try {
+                List<ItemDto> allItems = itemBo.getAllItems();
+                resp.setContentType("application/json");
+                Jsonb jsonb = JsonbBuilder.create();
+                jsonb.toJson(allItems, resp.getWriter());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         } else {
             resp.setContentType("application/json");
             Jsonb jsonb = JsonbBuilder.create();
@@ -65,7 +73,6 @@ public class ItemController extends HttpServlet {
     }
 
     // TODO : Update Item
-
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (req.getContentType() == null || !req.getContentType().toLowerCase().startsWith("application/json")) {

@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ItemDaoImpl implements ItemDao {
 
@@ -74,5 +76,27 @@ public class ItemDaoImpl implements ItemDao {
         preparedStatement.setInt(1, id);
 
         return preparedStatement.executeUpdate() > 0;
+    }
+
+    @Override
+    public List<Item> getAllItems() throws SQLException {
+
+        connection = ConnectionManager.getInstance().getConnection();
+
+        preparedStatement = connection.prepareStatement("SELECT * FROM item");
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        List<Item> itemList = new ArrayList<>();
+
+        while (resultSet.next()) {
+            itemList.add(new Item(
+                    resultSet.getInt(1),
+                    resultSet.getString(2),
+                    resultSet.getInt(3),
+                    resultSet.getDouble(4)
+            ));
+        }
+
+        return itemList;
     }
 }
