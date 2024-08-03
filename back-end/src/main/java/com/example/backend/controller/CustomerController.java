@@ -25,6 +25,7 @@ public class CustomerController extends HttpServlet {
 
     CustomerBo customerBo = new CustomerBoImpl();
 
+    // TODO : Add Customer
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (req.getContentType() == null || !req.getContentType().toLowerCase().startsWith("application/json")) {
