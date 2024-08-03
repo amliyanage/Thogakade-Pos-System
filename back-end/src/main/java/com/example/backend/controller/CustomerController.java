@@ -4,6 +4,7 @@ import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 import com.example.backend.bo.CustomerBo;
 import com.example.backend.bo.custom.CustomerBoImpl;
@@ -59,17 +60,27 @@ public class CustomerController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         try{
+
+            if (req.getParameter("id").equals("all")){
+                List<CustomerDto> allCustomers = customerBo.getAllCustomers();
+                if (allCustomers != null){
+                    resp.setContentType("application/json");
+                    Jsonb jsonb = JsonbBuilder.create();
+                    jsonb.toJson(allCustomers, resp.getWriter());
+                }
+                return;
+            }
+
+
             int id = Integer.parseInt(req.getParameter("id"));
-            System.out.println(id);
             CustomerDto customerDto = customerBo.searchCustomer(id);
-            System.out.println(customerDto);
             if (customerDto != null){
                 resp.setContentType("application/json");
                 Jsonb jsonb = JsonbBuilder.create();
                 jsonb.toJson(customerDto, resp.getWriter());
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 

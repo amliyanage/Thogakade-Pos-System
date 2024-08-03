@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 public interface CustomerBo {
     boolean addCustomer(CustomerDto customerDto) throws IOException, SQLException;
@@ -14,4 +15,6 @@ public interface CustomerBo {
     boolean updateCustomer(CustomerDto customerDto) throws SQLException;
 
     boolean deleteCustomer(int id) throws SQLException;
+
+    List<CustomerDto> getAllCustomers() throws SQLException;
 }
