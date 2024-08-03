@@ -45,4 +45,23 @@ public class ItemController extends HttpServlet {
             }
         }
     }
+
+    // TODO : Get Item
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        var id = req.getParameter("id");
+
+        if (id.equals("all")) {
+
+        } else {
+            resp.setContentType("application/json");
+            Jsonb jsonb = JsonbBuilder.create();
+            try {
+                jsonb.toJson(itemBo.searchItem(Integer.parseInt(id)), resp.getWriter());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
 }

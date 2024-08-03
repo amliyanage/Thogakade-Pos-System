@@ -23,4 +23,19 @@ public class ItemBoImpl implements ItemBo {
                 )
         );
     }
+
+    @Override
+    public ItemDto searchItem(int id) throws SQLException {
+        ItemDto itemDto = itemDao.searchItem(id);
+
+        if (itemDto != null) {
+            return new ItemDto(
+                    itemDto.getId(),
+                    itemDto.getName(),
+                    itemDto.getQty(),
+                    itemDto.getPrice()
+            );
+        }
+        return null;
+    }
 }
