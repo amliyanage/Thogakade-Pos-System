@@ -14,9 +14,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Logger;
 
 @WebServlet( urlPatterns = "/item" )
 public class ItemController extends HttpServlet {
+
+    static Logger logger = Logger.getLogger(ItemController.class.getName());
 
     ItemBo itemBo = new ItemBoImpl();
 
@@ -98,7 +101,6 @@ public class ItemController extends HttpServlet {
     }
 
     // TODO : Delete Item
-
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         var id = req.getParameter("id");
