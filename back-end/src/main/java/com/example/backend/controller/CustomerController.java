@@ -1,29 +1,23 @@
 package com.example.backend.controller;
 
 import java.io.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.example.backend.bo.CustomerBo;
+import com.example.backend.bo.BOFactory;
+import com.example.backend.bo.custom.CustomerBo;
 import com.example.backend.bo.custom.CustomerBoImpl;
 import com.example.backend.dto.CustomerDto;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
-import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
-
 @WebServlet( urlPatterns = "/customer" )
 public class CustomerController extends HttpServlet {
 
-    CustomerBo customerBo = new CustomerBoImpl();
+    CustomerBo customerBo = (CustomerBo) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.CUSTOMER);
 
     // TODO : Add Customer
     @Override
@@ -73,7 +67,7 @@ public class CustomerController extends HttpServlet {
             }
 
 
-            int id = Integer.parseInt(req.getParameter("id"));
+            String id = req.getParameter("id");
             CustomerDto customerDto = customerBo.searchCustomer(id);
             if (customerDto != null){
                 resp.setContentType("application/json");
@@ -116,7 +110,7 @@ public class CustomerController extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        int id = Integer.parseInt(req.getParameter("id"));
+        String id = req.getParameter("id");
 
         try {
             if (customerBo.deleteCustomer(id)){
