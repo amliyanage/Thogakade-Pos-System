@@ -38,67 +38,61 @@ $('#ItemManage .saveBtn').click(function(){
 
 });
 
-function validate(item){
-        
-        let valid = true;
-        
-        if((/^I0[0-9]+$/).test(item.itemId)){
-            $('#ItemManage .invalidCode').text('');
+async function validate(item) {
+
+    let valid = true;
+
+    if ((/^I0[0-9]+$/).test(item.itemId)) {
+        $('#ItemManage .invalidCode').text('');
+        valid = true;
+    } else {
+        $('#ItemManage .invalidCode').text('Invalid Item Id');
+        valid = false;
+    }
+
+    if ((/^(?:[A-Z][a-z]*)(?: [A-Z][a-z]*)*$/).test(item.itemName)) {
+        $('#ItemManage .invalidName').text('');
+
+        if (valid) {
             valid = true;
         }
-        else{
-            $('#ItemManage .invalidCode').text('Invalid Item Id');
+    } else {
+        $('#ItemManage .invalidName').text('Invalid Item Name');
+        valid = false;
+    }
+
+    if (item.itemQty != null && item.itemQty > 0) {
+        $('#ItemManage .invalidQty').text('');
+        if (valid) {
+            valid = true;
+        }
+    } else {
+        $('#ItemManage .invalidQty').text('Invalid Item Quantity');
+        valid = false;
+    }
+
+    if (item.itemPrice != null && item.itemPrice > 0) {
+        $('#ItemManage .invalidPrice').text('');
+        if (valid) {
+            valid = true;
+        }
+    } else {
+        $('#ItemManage .invalidPrice').text('Invalid Item Price');
+        valid = false;
+    }
+
+    let items = await getAllItems();
+
+    for (let i = 0; i < items.length; i++) {
+        if (items[i].itemId === item.itemId) {
+            $('#ItemManage .invalidCode').text('Item Id already exists');
             valid = false;
+            return valid;
         }
-        
-        if((/^(?:[A-Z][a-z]*)(?: [A-Z][a-z]*)*$/).test(item.itemName)){
-            $('#ItemManage .invalidName').text('');
-                
-            if(valid){
-                valid = true;
-            }
-        }
-        
-        else{
-            $('#ItemManage .invalidName').text('Invalid Item Name');
-            valid = false;
-        }
+    }
 
-        if(item.itemQty != null && item.itemQty > 0){
-            $('#ItemManage .invalidQty').text('');
-            if(valid){
-                valid = true;
-            }
-        }
-        else{
-            $('#ItemManage .invalidQty').text('Invalid Item Quantity');
-            valid = false;
-        }
+    return valid;
 
-        if(item.itemPrice != null && item.itemPrice > 0){
-            $('#ItemManage .invalidPrice').text('');
-            if(valid){
-                valid = true;
-            }
-        }
-
-        else{
-            $('#ItemManage .invalidPrice').text('Invalid Item Price');
-            valid = false;
-        }
-
-        let items = getAllItems();
-
-        for(let i = 0; i < items.length; i++){
-            if(items[i].itemId === item.itemId){
-                $('#ItemManage .invalidCode').text('Item Id already exists');
-                valid = false;
-                return valid;
-            }
-        }
-
-        return valid;
-        
 }
 
 function extractNumber(id){
@@ -110,42 +104,45 @@ function extractNumber(id){
 }
 
 
-function refresh(){
-    $('#ItemManage .itemId').val(generateId());
+async function refresh() {
+    generateId()
     $('#ItemManage .itemName').val('');
     $('#ItemManage .itemQty').val('');
     $('#ItemManage .itemPrice').val('');
     loadTable();
-    $('.counts .items h2').text(getAllItems().length);
+    let count = await getAllItems().length
+    $('.counts .items h2').text( count );
 }
 
-function generateId(){
-    let items = getAllItems();
+async function generateId() {
 
-    if(!items || items.length == 0){
-        return 'I01';
-    }
-    else{
+    let items = await getAllItems();
+    console.log(items,"+++++++++++Mendis");
+    if (!items || items.length == 0) {
+        $('#ItemManage .itemId').val("I01");
+    } else {
         let lastItem = items[items.length - 1];
+        console.log(lastItem);
         console.log(lastItem);
         let number = extractNumber(lastItem.itemId);
         console.log(number);
         number++;
-        return 'I0' + number;
+        let id =  'I0' + number;
+        $('#ItemManage .itemId').val(id);
     }
 }
 
-function loadTable(){
-    let items = getAllItems();
+async function loadTable() {
+    let items = await getAllItems();
     $('#ItemManage .tableRow').empty();
-    for(let i = 0; i < items.length; i++){
+    for (let i = 0; i < items.length; i++) {
         $('#ItemManage .tableRow').append(
             '<tr> ' +
-                '<td>' + items[i].itemId + '</td>' +
-                '<td>' + items[i].itemName + '</td>' +
-                '<td>' + items[i].itemQty + '</td>' +
-                '<td>' + items[i].itemPrice + '</td>' +
-            '</tr>' 
+            '<td>' + items[i].itemId + '</td>' +
+            '<td>' + items[i].itemName + '</td>' +
+            '<td>' + items[i].itemQty + '</td>' +
+            '<td>' + items[i].itemPrice + '</td>' +
+            '</tr>'
         );
     }
 }
@@ -162,34 +159,33 @@ $('#ItemManage .tableRow').on('click', 'tr', function(){
     $('#ItemManage .itemPrice').val(price);
 });
 
-$('#ItemManage .deleteBtn').click(function(){
+$('#ItemManage .deleteBtn').click(async function () {
     let id = $('#ItemManage .itemId').val();
-    let items = getAllItems();
+    let items = await getAllItems();
     let item = items.findIndex(item => item.itemId === id);
-    if(item >= 0){
-        deleteItem(item);
+    if (item >= 0) {
+        deleteItem(id);
         alert('Item Deleted');
         refresh();
-    }
-    else{
+    } else {
         $('#ItemManage .invalidCode').text('Item Id does not exist');
     }
 });
 
-$('#ItemManage .updateBtn').click(function(){
+$('#ItemManage .updateBtn').click(async function () {
     let item = {
-        itemId : 'I00',
-        itemName : $('#ItemManage .itemName').val(),
-        itemQty : $('#ItemManage .itemQty').val(),
-        itemPrice : $('#ItemManage .itemPrice').val()
+        itemId: 'I00',
+        itemName: $('#ItemManage .itemName').val(),
+        itemQty: $('#ItemManage .itemQty').val(),
+        itemPrice: $('#ItemManage .itemPrice').val()
     }
 
     let valid = validate(item);
 
     item.itemId = $('#ItemManage .itemId').val();
 
-    if(valid){
-        let items = getAllItems();
+    if (valid) {
+        let items = await getAllItems();
         let index = items.findIndex(i => i.itemId === item.itemId);
         updateItem(index, item);
         alert('Item Updated');
@@ -201,16 +197,15 @@ $('#ItemManage .clearBtn').click(function(){
     refresh();
 });
 
-$('#ItemManage .searchBtn').click(function(){
+$('#ItemManage .searchBtn').click(async function () {
     let id = $('#ItemManage .itemId').val();
-    let items = getAllItems();
+    let items = await getAllItems();
     let item = items.find(item => item.itemId === id);
-    if(item){
+    if (item) {
         $('#ItemManage .itemName').val(item.itemName);
         $('#ItemManage .itemQty').val(item.itemQty);
         $('#ItemManage .itemPrice').val(item.itemPrice);
-    }
-    else{
+    } else {
         $('#ItemManage .invalidCode').text('Item Id does not exist');
     }
 });
