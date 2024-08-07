@@ -104,6 +104,7 @@ function validate(customer){
 }
 
 function loadTable(customer){
+    console.log(customer,"=============#$$$$$$$$$========================table Load");
     $('#CustomerManage .tableRow').append(
         '<tr> ' +
             '<td>' + customer.custId + '</td>' +
@@ -122,23 +123,27 @@ function extractNumber(id) {
     return null;
 }
 
-function createCustomerId() {
-    let customers = getAllCustomers();
-    
+async function createCustomerId() {
+    let customers = await getAllCustomers();
+    console.log(customers,"Enna yanna apirh");
     if (!customers || customers.length === 0) {
         return 'C01';
     } else {
         let lastCustomer = customers[customers.length - 1];
+        console.log(lastCustomer,"_-------------------------last");
         let id = lastCustomer && lastCustomer.custId ? lastCustomer.custId : 'C00';
-        
+        console.log(id);
         let number = extractNumber(id);
         number++;
-        return 'C0' + number;
+        console.log(number)
+        const nextId = 'C0' + number;
+        console.log(nextId);
+        $('#CustomerManage .custId').val(nextId)
     }
 }
 
 function refresh(){
-    $('#CustomerManage .custId').val(createCustomerId());
+    createCustomerId()
     $('#CustomerManage .custName').val('');
     $('#CustomerManage .custAddress').val('');
     $('#CustomerManage .custSalary').val('');
@@ -147,6 +152,7 @@ function refresh(){
     $('#CustomerManage .invalidCustAddress').text('');
     $('.counts .customers h2').text(getAllCustomers().length);
     reloadTable();
+    // loadCustomers()
 }
 
 $('#CustomerManage .cleatBtn').click(function(){
@@ -155,37 +161,43 @@ $('#CustomerManage .cleatBtn').click(function(){
 
 $('#CustomerManage .searchBtn').click(function(){
     let customer = searchCustomer($('#CustomerManage .custId').val());
-    if(customer){
-        $('#CustomerManage .custName').val(customer.custName);
-        $('#CustomerManage .custAddress').val(customer.custAddress);
-        $('#CustomerManage .custSalary').val(customer.custSalary);
-    }
-    else{
-        alert('Customer Not Found');
-    }
 });
 
-function searchCustomer(id){
-    let customers = getAllCustomers();
-    let customer = customers.find(c => c.custId === id);
-    return customer;
+async function searchCustomer(id) {
+    try {
+        const customers = await getAllCustomers();
+        let customer = customers.find(c => c.custId === id);
+        console.log(customer, " =================")
+        if(customer){
+            $('#CustomerManage .custName').val(customer.custName);
+            $('#CustomerManage .custAddress').val(customer.custAddress);
+            $('#CustomerManage .custSalary').val(customer.custSalary);
+        }
+        else{
+            alert('Customer Not Found');
+        }
+        return customer;
+    } catch (error) {
+        console.error(error)
+        return null;
+    }
 }
 
-$('#CustomerManage .updateBtn').click(function(){
-    
+$('#CustomerManage .updateBtn').click(async function () {
+
     let UpdateCustomer = {
-        custId : 'C00',
-        custName : $('#CustomerManage .custName').val(),
-        custAddress : $('#CustomerManage .custAddress').val(),
-        custSalary : $('#CustomerManage .custSalary').val()
+        custId: 'C00',
+        custName: $('#CustomerManage .custName').val(),
+        custAddress: $('#CustomerManage .custAddress').val(),
+        custSalary: $('#CustomerManage .custSalary').val()
     }
 
     let validResult = validate(UpdateCustomer);
 
     UpdateCustomer.custId = $('#CustomerManage .custId').val();
-    
-    if(validResult){
-        let customers = getAllCustomers();
+
+    if (validResult) {
+        let customers = await getAllCustomers();
         let index = customers.findIndex(c => c.custId === UpdateCustomer.custId);
         updateCustomer(index, UpdateCustomer);
         alert('Customer Updated');
@@ -196,23 +208,32 @@ $('#CustomerManage .updateBtn').click(function(){
 
 function reloadTable(){
     let customers = getAllCustomers();
-    $('#CustomerManage .tableRow').empty();
-    customers.forEach(c => {
-        loadTable(c);
-    });
+    $('#CustomerManage .tableRow').empty()
+    console.log(customers,"=====================================================table Load");
+    // customers.forEach(c => {
+    //     loadTable(c);
+    // });
+    getAllCustomers().then((customer) =>{
+        customer.forEach((customer) => {
+            loadTable(customer);
+        })
+    }).catch(
+        (error) => {
+            console.log(error);
+        }
+    )
 }
 
-$('#CustomerManage .removeBtn').click(function(){
-    let customers = getAllCustomers();
+$('#CustomerManage .removeBtn').click(async function () {
+    let customers = await getAllCustomers();
     let id = $('#CustomerManage .custId').val();
 
     let index = customers.findIndex(c => c.custId === id);
-    if(index >= 0){
-        deleteCustomer(index);
+    if (index >= 0) {
+        deleteCustomer(id);
         alert('Customer Deleted');
         refresh();
-    }
-    else{
+    } else {
         alert('Customer Not Found');
     }
 });
@@ -228,4 +249,13 @@ $('#CustomerManage .tableRow').on('click', 'tr', function(){
     $('#CustomerManage .custAddress').val(qty);
     $('#CustomerManage .custSalary').val(price);
 });
+
+// export function loadCustomers(){
+//     getAllCustomers().then((customer) =>{
+//         console.log(customer,"=============================================getAllCustomers");
+//         customer.map((customer) => {
+//             loadTable(customer);
+//         });
+//     })
+// }
 

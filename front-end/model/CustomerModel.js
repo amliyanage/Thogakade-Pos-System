@@ -26,13 +26,74 @@ export function saveCustomer(customer) {
 }
 
 export function getAllCustomers() {
-    return Customers;
+
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: `http://localhost:8080/customer?id=all`,
+            method: "GET",
+            dataType: "json", // Ensure the response is treated as JSON
+            success: function (data) {
+                if (!Array.isArray(data)) {
+                    reject(new Error("Expected an array of customers"));
+                    return;
+                }
+
+                let returnData = data.map((customer) => ({
+                    custId: customer.id,
+                    custName: customer.name,
+                    custAddress: customer.address,
+                    custSalary: customer.salary
+                }));
+
+                console.log(returnData, "=============================================temp cust=");
+                resolve(returnData);
+            },
+            error: function (error) {
+                reject(error);
+            }
+        });
+    });
 }
 
 export function updateCustomer(index , customer){
-    Customers[index] = customer;
+
+    let customerData = {
+        id :customer.custId,
+        name : customer.custName,
+        address : customer.custAddress,
+        salary : customer.custSalary
+    }
+
+    const customerJson = JSON.stringify(customerData)
+
+    $.ajax({
+        url : "http://localhost:8080/customer",
+        method : "PUT",
+        data : customerJson,
+        headers : {"Content-Type": "application/json"},
+        success : function (res){
+            console.log("Customer Updated");
+        },
+    })
+
 }
 
 export function deleteCustomer(index){
-    Customers.splice(index, 1);
+
+    $.ajax({
+        url : `http://localhost:8080/customer?id=${index}`,
+        method : "DELETE",
+        success : function (res){
+            console.log("Customer Deleted");
+        }
+    })
+
 }
+
+// export function getAllCustomers(){
+//     console.log("=============================================getAllCustomers");
+//     getAllCustomer().then((customer) =>{
+//         console.log(customer,"=============================================getAllCustomers");
+//         return customer;
+//     })
+// }
