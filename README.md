@@ -28,20 +28,22 @@ Togakade POS System is a web-based Point of Sale (POS) application developed to 
 ## Controllers and Endpoints
 
 ### Customer Controller
-- **Add Customer:** `POST /customers` - Adds a new customer.
-- **Search Customer:** `GET /customers/{id}` - Retrieves customer details by ID.
-- **Update Customer:** `PUT /customers/{id}` - Updates the details of an existing customer.
-- **Delete Customer:** `DELETE /customers/{id}` - Deletes a customer by ID.
+- **Add Customer:** `POST /customer` - Adds a new customer.
+- **Search Customer:** `GET /customer/{id}` - Retrieves customer details by ID.
+- **Update Customer:** `PUT /customer/{id}` - Updates the details of an existing customer.
+- **Delete Customer:** `DELETE /customer/{id}` - Deletes a customer by ID.
+- **Get Customers:** `GET /customer` - Retrieves a list of all customers.
 
 ### Item Controller
-- **Add Item:** `POST /items` - Adds a new item to the inventory.
-- **Search Item:** `GET /items/{id}` - Retrieves item details by ID.
-- **Update Item:** `PUT /items/{id}` - Updates the details of an existing item.
-- **Delete Item:** `DELETE /items/{id}` - Deletes an item by ID.
+- **Add Item:** `POST /item` - Adds a new item to the inventory.
+- **Search Item:** `GET /item/{id}` - Retrieves item details by ID.
+- **Update Item:** `PUT /item/{id}` - Updates the details of an existing item.
+- **Delete Item:** `DELETE /item/{id}` - Deletes an item by ID.
+- **Get Items:** `GET /item` - Retrieves a list of all items.
 
 ### Order Controller
-- **Add Order:** `POST /orders` - Creates a new order.
-- **Get Orders:** `GET /orders` - Retrieves a list of all orders.
+- **Add Order:** `POST /order` - Creates a new order.
+- **Get Orders:** `GET /order` - Retrieves a list of all orders.
 
 ## Getting Started
 1. **Prerequisites:** Ensure you have a Java EE environment set up with Tomcat installed.
