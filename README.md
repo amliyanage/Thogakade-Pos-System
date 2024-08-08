@@ -30,14 +30,14 @@ Togakade POS System is a web-based Point of Sale (POS) application developed to 
 ### Customer Controller
 - **Add Customer:** `POST /customer` - Adds a new customer.
 - **Search Customer:** `GET /customer/{id}` - Retrieves customer details by ID.
-- **Update Customer:** `PUT /customer/{id}` - Updates the details of an existing customer.
+- **Update Customer:** `PUT /customer` - Updates the details of an existing customer.
 - **Delete Customer:** `DELETE /customer/{id}` - Deletes a customer by ID.
 - **Get Customers:** `GET /customer` - Retrieves a list of all customers.
 
 ### Item Controller
 - **Add Item:** `POST /item` - Adds a new item to the inventory.
 - **Search Item:** `GET /item/{id}` - Retrieves item details by ID.
-- **Update Item:** `PUT /item/{id}` - Updates the details of an existing item.
+- **Update Item:** `PUT /item` - Updates the details of an existing item.
 - **Delete Item:** `DELETE /item/{id}` - Deletes an item by ID.
 - **Get Items:** `GET /item` - Retrieves a list of all items.
 
