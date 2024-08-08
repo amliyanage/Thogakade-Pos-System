@@ -34,7 +34,7 @@ public class ItemController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (req.getContentType() == null || !req.getContentType().toLowerCase().startsWith("application/json")) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            logger.warning("Invalid Content Type");
+            logger.error("Invalid Content Type");
             return;
         }
 
