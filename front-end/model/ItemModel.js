@@ -86,7 +86,7 @@ export function updateItem(index, item){
     }
 
     $.ajax({
-        url : `http://localhost:8080/item?id=${index}`,
+        url : `http://localhost:8080/item`,
         method : "PUT",
         contentType : "application/json",
         data : JSON.stringify(sendItem),
