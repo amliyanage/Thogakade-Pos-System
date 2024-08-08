@@ -41,60 +41,53 @@ $('#CustomerManage .saveBtn').click(function(){
 });
 
 
-function validate(customer){
+async function validate(customer) {
 
     let valid = true;
 
-    if((/^C0[0-9]+$/).test(customer.custId)){
+    if ((/^C0[0-9]+$/).test(customer.custId)) {
         $('#CustomerManage .invalidCustId').text('');
         valid = true;
-    }
-    else{
+    } else {
         $('#CustomerManage .invalidCustId').text('Invalid Customer Id');
         valid = false;
     }
 
-    if((/^(?:[A-Z][a-z]*)(?: [A-Z][a-z]*)*$/).test(customer.custName)){
+    if ((/^(?:[A-Z][a-z]*)(?: [A-Z][a-z]*)*$/).test(customer.custName)) {
         $('#CustomerManage .invalidCustName').text('');
-        
-        if(valid){
+
+        if (valid) {
             valid = true;
         }
-    }
-
-    else{
+    } else {
         $('#CustomerManage .invalidCustName').text('Invalid Customer Name');
         valid = false;
     }
 
-    if((/^[A-Z][a-z, ]+$/).test(customer.custAddress)){
+    if ((/^[A-Z][a-z, ]+$/).test(customer.custAddress)) {
         $('#CustomerManage .invalidCustAddress').text('');
-        
-        if(valid){
+
+        if (valid) {
             valid = true;
         }
-    }
-
-    else{
+    } else {
         $('#CustomerManage .invalidCustAddress').text('Invalid Customer Address');
         valid = false;
     }
 
-    if(customer.custSalary != null && customer.custSalary > 0){
+    if (customer.custSalary != null && customer.custSalary > 0) {
         $('#CustomerManage .invalidCustSalary').text('');
-        if(valid){
+        if (valid) {
             valid = true;
         }
-    }
-    
-    else{
+    } else {
         $('#CustomerManage .invalidCustSalary').text('Invalid Customer Salary');
         valid = false;
     }
 
-    let customers = getAllCustomers();
-    for(let i = 0; i < customers.length; i++){
-        if(customers[i].custId === customer.custId){
+    let customers = await getAllCustomers();
+    for (let i = 0; i < customers.length; i++) {
+        if (customers[i].custId === customer.custId) {
             $('#CustomerManage .invalidCustId').text('Customer Id Already Exists');
             valid = false;
         }
@@ -142,7 +135,7 @@ async function createCustomerId() {
     }
 }
 
-function refresh(){
+async function refresh() {
     createCustomerId()
     $('#CustomerManage .custName').val('');
     $('#CustomerManage .custAddress').val('');
@@ -150,7 +143,7 @@ function refresh(){
     $('#CustomerManage .invalidCustId').text('');
     $('#CustomerManage .invalidCustName').text('');
     $('#CustomerManage .invalidCustAddress').text('');
-    $('.counts .customers h2').text(getAllCustomers().length);
+    $('.counts .customers h2').text(await getAllCustomers().length);
     reloadTable();
     // loadCustomers()
 }
@@ -206,14 +199,14 @@ $('#CustomerManage .updateBtn').click(async function () {
 
 });
 
-function reloadTable(){
-    let customers = getAllCustomers();
+async function reloadTable() {
+    let customers = await getAllCustomers();
     $('#CustomerManage .tableRow').empty()
-    console.log(customers,"=====================================================table Load");
+    console.log(customers, "=====================================================table Load");
     // customers.forEach(c => {
     //     loadTable(c);
     // });
-    getAllCustomers().then((customer) =>{
+    getAllCustomers().then((customer) => {
         customer.forEach((customer) => {
             loadTable(customer);
         })
