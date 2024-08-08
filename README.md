@@ -52,8 +52,5 @@ Togakade POS System is a web-based Point of Sale (POS) application developed to 
 ## API Documentation
 Refer to the [Postman Documentation](https://documenter.getpostman.com/view/35384192/2sA3s1oXj9) for detailed API endpoints and usage instructions.
 
-## Contributing
-Contributions are welcome! Please fork the repository and submit pull requests.
-
 ## License
 This project is licensed under the [MIT License](LICENSE).
