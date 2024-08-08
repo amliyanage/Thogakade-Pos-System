@@ -120,7 +120,7 @@ async function createCustomerId() {
     let customers = await getAllCustomers();
     console.log(customers,"Enna yanna apirh");
     if (!customers || customers.length === 0) {
-        return 'C01';
+        $('#CustomerManage .custId').val("C01")
     } else {
         let lastCustomer = customers[customers.length - 1];
         console.log(lastCustomer,"_-------------------------last");
