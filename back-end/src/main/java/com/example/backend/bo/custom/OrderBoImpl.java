@@ -1,11 +1,13 @@
 package com.example.backend.bo.custom;
 
 import com.example.backend.dao.DAOFactory;
+import com.example.backend.dao.custom.ItemDao;
 import com.example.backend.dao.custom.OrderDao;
 import com.example.backend.dao.custom.OrderDetailDao;
 import com.example.backend.db.ConnectionManager;
 import com.example.backend.dto.ItemDto;
 import com.example.backend.dto.OrderDto;
+import com.example.backend.entity.Item;
 import com.example.backend.entity.Order;
 import com.example.backend.entity.OrderDetails;
 
@@ -22,6 +24,8 @@ public class OrderBoImpl implements OrderBo {
     OrderDetailDao orderItemDetailDAO =
             (OrderDetailDao) DAOFactory.getInstance()
                     .getDAO(DAOFactory.DAOType.OrderDetail);
+
+    ItemDao itemDao = (ItemDao) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.ITEM);
 
     @Override
     public boolean saveOrder(OrderDto dto) throws SQLException {
@@ -55,6 +59,14 @@ public class OrderBoImpl implements OrderBo {
                     isOrderItemSaved = false;
                     break;
                 }
+            }
+        }
+        System.out.println(dto.getItems()+"get Items");
+        if (isOrderSaved){
+            for (ItemDto item : dto.getItems()) {
+                Item data = itemDao.getData(item.getId());
+                data.setQty(data.getQty() - item.getQty());
+                itemDao.update(data);
             }
         }
 
