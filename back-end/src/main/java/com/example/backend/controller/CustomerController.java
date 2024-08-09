@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.example.backend.bo.BOFactory;
 import com.example.backend.bo.custom.CustomerBo;
-import com.example.backend.bo.custom.CustomerBoImpl;
 import com.example.backend.dto.CustomerDto;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;

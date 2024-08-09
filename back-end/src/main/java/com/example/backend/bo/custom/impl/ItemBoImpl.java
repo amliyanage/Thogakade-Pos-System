@@ -1,5 +1,6 @@
-package com.example.backend.bo.custom;
+package com.example.backend.bo.custom.impl;
 
+import com.example.backend.bo.custom.ItemBo;
 import com.example.backend.dao.DAOFactory;
 import com.example.backend.dao.custom.ItemDao;
 import com.example.backend.dto.ItemDto;

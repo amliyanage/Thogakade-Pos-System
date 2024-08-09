@@ -1,8 +1,8 @@
 package com.example.backend.bo;
 
-import com.example.backend.bo.custom.CustomerBoImpl;
-import com.example.backend.bo.custom.ItemBoImpl;
-import com.example.backend.bo.custom.OrderBoImpl;
+import com.example.backend.bo.custom.impl.CustomerBoImpl;
+import com.example.backend.bo.custom.impl.ItemBoImpl;
+import com.example.backend.bo.custom.impl.OrderBoImpl;
 
 public class BOFactory {
     private static BOFactory boFactory;

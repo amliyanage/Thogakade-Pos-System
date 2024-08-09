@@ -2,7 +2,6 @@ package com.example.backend.controller;
 
 import com.example.backend.bo.BOFactory;
 import com.example.backend.bo.custom.ItemBo;
-import com.example.backend.bo.custom.ItemBoImpl;
 import com.example.backend.dto.ItemDto;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
