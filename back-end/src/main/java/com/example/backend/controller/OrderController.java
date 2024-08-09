@@ -36,15 +36,15 @@ public class OrderController extends HttpServlet {
             Jsonb jsonb = JsonbBuilder.create();
             OrderDto orderDTO = jsonb.fromJson(req.getReader(), OrderDto.class);
             System.out.println(orderDTO + "in order controller");
-            writer.write("Saved Order Successfully");
+            orderBO.saveOrder(orderDTO);
+            writer.write("Order Added Successfully");
             resp.setStatus(HttpServletResponse.SC_CREATED);
             logger.info("Order Added Successfully");
         } catch (Exception e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             logger.error("Failed to add Order");
             e.printStackTrace();
-        }
-    }
+}}
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

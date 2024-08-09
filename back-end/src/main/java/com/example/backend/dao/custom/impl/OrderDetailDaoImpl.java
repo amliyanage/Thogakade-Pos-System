@@ -11,6 +11,7 @@ public class OrderDetailDaoImpl  implements OrderDetailDao {
 
     @Override
     public boolean save(OrderDetails entity) throws SQLException {
+        System.out.println(entity);
         return SQLUtil.execute(SAVE_ORDER_ITEM_DETAIL,
                 entity.getOrderId(),
                 entity.getItemId(),
